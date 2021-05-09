@@ -9,6 +9,6 @@ function addOutputLine (text) {
 
   // füge das neu erstellte Element und seinen Inhalt ins DOM ein
   var currentDiv = document.getElementById("div1");
-  document.body.insertBefore(newDiv, currentDiv);
+  document.getElementById("outputDiv").insertBefore(newDiv, currentDiv);
 }
 

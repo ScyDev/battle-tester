@@ -1,4 +1,6 @@
 
+// ---------- config ----------
+
 const WEAPON_NONE = 0;
 const WEAPON_ONE_HANDED = 1;
 const WEAPON_TWO_HANDED = 2;
@@ -25,6 +27,8 @@ const weaponShield = {
 
 
 
+// ---------- functions ----------
+
 function getTypeOfWeapons(hero) {
   let type = WEAPON_NONE;
 
@@ -46,7 +50,7 @@ function getTypeOfWeapons(hero) {
 }
 
 function weaponAttack(attacker, weapon, defender) {
-  addOutputLine(attacker.name+" attacks "+defender.name+" with "+JSON.stringify(weapon, null, 4));
+  addOutputLine(attacker.name+" attacks "+defender.name+" with "+weapon.name+"<"+weapon.damage+">"); // JSON.stringify(weapon, null, 4)
 
   defender.health -= weapon.damage;
   
