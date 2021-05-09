@@ -6,6 +6,8 @@ const RANGE_FAR = 27    // 9 + 6 + 12 = 27
 
 
 function addOutputLine (text) {
+  console.log(text);
+  
   // erstelle ein neues div Element
   // und gib ihm etwas Inhalt
   var newDiv = document.createElement("div");

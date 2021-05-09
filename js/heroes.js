@@ -4,7 +4,8 @@ let basicHeroStuff = {
   deaths: 0,
   kills: 0,
   dead: false,
-  timers: []
+  triggeredEffects: [],
+  timedEffects: []
 }
 
 

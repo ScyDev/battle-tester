@@ -53,6 +53,9 @@ function weaponAttack(attacker, weapon, defender) {
   addOutputLine(attacker.name+" attacks "+defender.name+" with "+weapon.name+"<"+weapon.damage+">"); // JSON.stringify(weapon, null, 4)
 
   defender.health -= weapon.damage;
+
+  // trigger effects that respond to weapon attacks
+  triggerActionEffect(attacker, defender, ACTION_TYPE_ATTACK)
   
   checkHealth(defender, attacker);
 }

@@ -7,17 +7,20 @@ const maxRounds = 100; // prevent endless loops
 const probabilityOfFindingTile = 0.2;   // finding a suitable tile within range of target hero
 const probabilityOfAttack = 0.3;        // attacking or just moving around?
 
-
-
-let heroesOnMap = [
+let heroesForBattle = [
   heroNightmare,
   heroProtector
 ];
 
+let heroesOnMap = [];
+
+
+
 function main() {
   // copy basic hero attributes onto all heroes
-  heroesOnMap.forEach(hero => {
-    Object.assign(hero, basicHeroStuff);
+  heroesForBattle.forEach(hero => {
+    let clonedHeroStuff = JSON.parse(JSON.stringify(basicHeroStuff)); // deep copy
+    Object.assign(hero, clonedHeroStuff);
   });
 
   runBattles();
@@ -40,9 +43,17 @@ function runBattles() {
 
     // reset heroes health before battle
     // TODO: copy them to have them clean (auras, timers, etc)!
-    heroesOnMap.forEach(hero => {
+    heroesForBattle.forEach(hero => {
+      // TODO: !!! stringify kills magic spells functions
+      // let clonedHero = JSON.parse(JSON.stringify(hero)); // deep copy
+      // heroesOnMap.push(clonedHero);
+
+      // reset heroes manually
       hero.health = hero.maxHealth;
       hero.dead = false;
+      hero.triggeredEffects = [],
+      hero.timedEffects = []
+      heroesOnMap.push(hero);
     });
     
     initTiles();
@@ -59,7 +70,7 @@ function runBattles() {
 
 function oneBattle() {
   printHealth();
-  
+
   let round = 0;
   while (heroesOnMap.filter(hero => hero.health > 0).length > 1) {
     round++;
@@ -69,7 +80,15 @@ function oneBattle() {
     
     addOutputLine("--- Round "+round);
 
+    // run timed effects
+    heroesOnMap.forEach(hero => {
+      triggerTimedEffect(hero)
+    });
+    
     oneFight();
+
+    printHealth();
+    logEffects();    
   }
 }
 
@@ -110,13 +129,20 @@ function oneFight() {
 
   });
 
-  printHealth();
 }
 
 
 function printHealth() {
   heroesOnMap.forEach(hero => {
     addOutputLine(hero.name+" health: "+hero.health);
+  });
+}
+
+function logEffects() {
+  heroesOnMap.forEach(hero => {
+    console.log(hero.name+" effects: ");
+    console.log("           timed: "+JSON.stringify(hero.timedEffects, null, 4));
+    console.log("           triggered: "+JSON.stringify(hero.triggeredEffects, null, 4));
   });
 }
 
