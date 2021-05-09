@@ -58,6 +58,8 @@ function runBattles() {
 }
 
 function oneBattle() {
+  printHealth();
+  
   let round = 0;
   while (heroesOnMap.filter(hero => hero.health > 0).length > 1) {
     round++;
@@ -108,10 +110,14 @@ function oneFight() {
 
   });
 
+  printHealth();
+}
+
+
+function printHealth() {
   heroesOnMap.forEach(hero => {
     addOutputLine(hero.name+" health: "+hero.health);
   });
-  
 }
 
 
