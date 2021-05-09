@@ -1,8 +1,9 @@
 // action types that can trigger an effect
 
+// used in bitmask
 const ACTION_TYPE_ATTACK = 1;
 const ACTION_TYPE_MAGIC = 2;
-const ACTION_TYPE_TELEPORT = 3;
+const ACTION_TYPE_TELEPORT = 4;
 
 // ---------- config ----------
 
@@ -15,13 +16,15 @@ const magicActiveProtect = {
 
     // an action triggered effect
     let actionTriggered = {
-      name: "preventDamage",
+      name: "restoreDamage",
+      actionTypes: ACTION_TYPE_ATTACK,
+      //actionTypes: ACTION_TYPE_ATTACK | ACTION_TYPE_MAGIC, // combine bitmask
       counter: 3,
       strength: points,
-      iteration: function(wearer, effect) { // effect = the parent action triggered effect
-        addOutputLine("                effect: preventing one damage");
+      iteration: function(wearer, parentEffect) { 
+        addOutputLine("                effect: restoring one damage");
         wearer.health += 1;
-        effect.counter--;
+        parentEffect.counter--;
       }
     }
     caster.triggeredEffects.push(actionTriggered);
@@ -40,10 +43,10 @@ const magicActiveAreaDamage = {
       name: "dotHurt",
       counter: 3,
       strength: points,
-      iteration: function(wearer, effect) { // effect = the parent time triggered effect
+      iteration: function(wearer, parentEffect) { 
         addOutputLine("                effect: give one damage");
         wearer.health -= 1;
-        effect.counter--;
+        parentEffect.counter--;
       }
     }
     target.timedEffects.push(timeTriggered);    
@@ -67,8 +70,15 @@ function magicAttack(attacker, defender) {
 function triggerActionEffect(attacker, wearer, type) {
   // TODO: check action type
   wearer.triggeredEffects.forEach(effect => {
-    addOutputLine("trigger action effect on "+wearer.name);
-    effect.iteration(wearer, effect)
+    if (effect.actionTypes & type) { // check bitmask
+      addOutputLine("trigger action effect on "+wearer.name);
+      effect.iteration(wearer, effect)
+    }
+    else {
+      let binType = (type >>> 0).toString(2);
+      let binActionTypes = (effect.actionTypes >>> 0).toString(2);
+      console.log("action effect doesn't match: "+binType+" not in "+binActionTypes);
+    }
   });  
 
   wearer.triggeredEffects = wearer.triggeredEffects.filter(effect => effect.counter > 0);

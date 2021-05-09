@@ -11,7 +11,7 @@ let basicHeroStuff = {
 
 const heroNightmare = {
   name: "Des Alpes",
-  maxHealth: 5,
+  maxHealth: 10,
   health: 5,
   speed: 3,
   range: RANGE_FAR,
@@ -27,7 +27,7 @@ const heroNightmare = {
 
 const heroProtector = {
   name: "Beschützer",
-  maxHealth: 9,
+  maxHealth: 18,
   health: 9,
   speed: 2,
   range: RANGE_NEAR,
