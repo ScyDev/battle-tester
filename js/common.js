@@ -2,7 +2,7 @@
 // range is number of reachable tiles: 
 const RANGE_NEAR = 9    // just 9
 const RANGE_MEDIUM = 15 // 9 + 6 = 15
-const RANGE_FAR = 27    // 9 + 6 + 12 = 27
+const RANGE_FAR = 27    // 9 + 6 + 6 = 21
 
 
 function addOutputLine (text) {
