@@ -17,10 +17,29 @@ const tilesCount = [
 let tiles = [];
 
 
+// fill map with number of tiles
+function initTiles() {
+  tiles = [];
+  
+  tilesCount.forEach(tile => {
+    for (let i = 0; i < tile.count; i++) {
+      tiles.push({tile: tile, used: false})
+    }
+  });
+}
+
+function refreshTiles() {
+  addOutputLine("----------- refreshing tiles! ----------");
+  // make all tiles unused
+  tiles.forEach(tile => {
+    tile["used"] = false;
+  });  
+}
+
 function heroCanDoActionOnTile(action, attacker, defender) {
   //let unusedTiles = tiles.filter(tile => tile.used == false);
   
-  // pick number of tiles in range of attacker
+  // pick number of random tiles "in range" of attacker
   let reachableTiles = [];
   for (let i = 0; i < attacker.range; i++) {
     let nextTile = tiles[Math.floor(Math.random()*tiles.length)];

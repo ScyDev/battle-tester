@@ -3,6 +3,8 @@
 const numberOfBattles = 1;
 const maxRounds = 100; // prevent endless loops
 
+const refreshTilesAfterNumRounds = 15;
+
 // example: 0.223 means 22.3% chance
 const probabilityOfFindingTile = 0.2;   // finding a suitable tile within range of target hero
 const probabilityOfAttack = 0.3;        // attacking or just moving around?
@@ -15,7 +17,6 @@ let heroesForBattle = [
 let heroesOnMap = [];
 
 
-
 function main() {
   // copy basic hero attributes onto all heroes
   heroesForBattle.forEach(hero => {
@@ -24,17 +25,6 @@ function main() {
   });
 
   runBattles();
-}
-
-// fill map with number of tiles
-function initTiles() {
-  tiles = [];
-  
-  tilesCount.forEach(tile => {
-    for (let i = 0; i < tile.count; i++) {
-      tiles.push({tile: tile, used: false})
-    }
-  });
 }
 
 function runBattles() {
@@ -73,7 +63,13 @@ function oneBattle() {
 
   let round = 0;
   while (heroesOnMap.filter(hero => hero.health > 0).length > 1) {
+    // log tiles 
+    console.log(JSON.parse(JSON.stringify(tiles))); // force copy, because JS console only has references and lazy loads them, so no matter how many times your log, it always shows the last state of an object
+
     round++;
+    if (round % refreshTilesAfterNumRounds == 0) {
+      refreshTiles();
+    }
     if (round >= maxRounds) {
       break;
     }
